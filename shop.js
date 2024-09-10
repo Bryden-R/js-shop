@@ -20,7 +20,7 @@ function calculateTotal(selectedProducts) {
 }
 
 // purchasing products
-function runShopSimulation() {
+function buyProducts() {
     const budget = 50;
     const selectedProducts = [1, 2]; 
 
