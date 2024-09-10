@@ -1,35 +1,75 @@
 const products = ["Apple", "Banana", "Orange"];
 const prices = [6, 9, 7];
+const userBudget = 50;
 
-//products and prices
-function displayProducts() {
-  console.log("Available Products:");
+// products with prices
+function getProductList() {
+  let productList = "Available Products:\n";
   for (let i = 0; i < products.length; i++) {
-    console.log(`${i + 1}. ${products[i]} - R${prices[i]}`);
+    productList += `${i + 1}. ${products[i]} - R${prices[i]}\n`;
   }
+  return productList;
 }
 
-function calculateTotalCost(selectedItems) {
-  let totalCost = 0;
-  for (let i = 0; i < selectedItems.length; i++) {
-    totalCost += prices[selectedItems[i]];
+// calculating total cost
+function calculateTotalCostAndItems(selectedIndices) {
+  let total = 0;
+  let purchasedItems = {};
+
+  for (let i = 0; i < selectedIndices.length; i++) {
+    let index = selectedIndices[i];
+    if (index >= 0 && index < products.length) {
+      total += prices[index];
+      let product = products[index];
+      purchasedItems[product] = (purchasedItems[product] || 0) + 1;
+    } else {
+      alert(`Invalid: ${index}`);
+    }
   }
-  return totalCost;
+
+  return { total, purchasedItems };
 }
 
-// to buy
-function shop(budget) {
-  displayProducts();
-  let selectedItems = [0, 1]; // selected products
-  let totalCost = calculateTotalCost(selectedItems);
-  if (totalCost > budget) {
-    console.log("Sorry, Insufficient Funds.");
+// purchasing
+function shop() {
+  const productList = getProductList();
+
+  const selectedProducts = [];
+
+  while (true) {
+    let productIndexInput = prompt(
+      `${productList}\nEnter the number of the fruits you wish to purchase (or 0 if selection is compete):`
+    );
+    let productIndex = +productIndexInput - 1;
+
+    if (productIndex === -1) {
+      break;
+    }
+
+    if (
+      productIndex < 0 ||
+      productIndex >= products.length ||
+      productIndex != productIndex
+    ) {
+      alert("Invalid number. Please try again.");
+    } else {
+      selectedProducts.push(productIndex);
+    }
+  }
+
+  const { total, purchasedItems } =
+    calculateTotalCostAndItems(selectedProducts);
+
+  if (userBudget < total) {
+    alert(`Insufficient Funds. Your budget is R${userBudget}.`);
   } else {
-    let change = budget - totalCost;
-    console.log(`Total cost: R${totalCost}`);
-    console.log(`Change Remaining: R${change}`);
+    const change = userBudget - total;
+    let purchasedSummary = "You purchased:\n";
+    for (let item in purchasedItems) {
+      purchasedSummary += `${purchasedItems[item]} x ${item}\n`;
+    }
+    alert(`${purchasedSummary}Total cost: R${total}\nChange: R${change}`);
   }
 }
 
-let budget = 50;
-shop(budget);
+shop();
