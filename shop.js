@@ -38,7 +38,7 @@ function shop() {
 
   while (true) {
     let productIndexInput = prompt(
-      `${productList}\nEnter the number of the fruits you wish to purchase (or 0 if selection is compete):`
+      `${productList}\nEnter the number for the fruits you wish to purchase (or press 0 if selection is complete):`
     );
     let productIndex = +productIndexInput - 1;
 
@@ -51,7 +51,7 @@ function shop() {
       productIndex >= products.length ||
       productIndex != productIndex
     ) {
-      alert("Invalid number. Please try again.");
+      alert("Invalid Number. Please Try Again.");
     } else {
       selectedProducts.push(productIndex);
     }
